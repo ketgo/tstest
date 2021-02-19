@@ -27,16 +27,18 @@ class Runner {
    * @brief Chronologically ordered list of events
    *
    */
-  EventList eventList;
+  EventList event_list;
 
 public:
-  void opBegin(const std::string &name) {}
+  void OpBegin(const std::string &name) {}
 
-  void opBegin(const std::string &&name) {}
+  void OpBegin(const std::string &&name) {}
 
-  void opEnd(const std::string &name) {}
+  void OpEnd(const std::string &name) {}
 
-  void opEnd(const std::string &&name) {}
+  void OpEnd(const std::string &&name) {}
+
+  void Eun();
 };
 
 } // namespace tstest

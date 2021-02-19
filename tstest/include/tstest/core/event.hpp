@@ -50,14 +50,14 @@ public:
    *
    * @returns constant reference to the event type
    */
-  const Type &getType() const { return type; }
+  const Type &GetType() const { return type; }
 
   /**
    * @brief Get the event name
    *
    * @returns constant reference to the event name
    */
-  const EventName &getName() const { return name; }
+  const EventName &GetName() const { return name; }
 
   /**
    * @brief Equality comparision operator

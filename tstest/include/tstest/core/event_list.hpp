@@ -45,7 +45,7 @@ public:
    *
    * @param event constant reference to the event to push
    */
-  void push(const Event &event) {
+  void Push(const Event &event) {
     LockGuard guard(lock);
 
     events.push_back(event);
@@ -56,7 +56,7 @@ public:
    *
    * @param event lvalue reference to the event to push
    */
-  void push(Event &&event) {
+  void Push(Event &&event) {
     LockGuard guard(lock);
 
     events.push_back(event);
@@ -66,7 +66,7 @@ public:
    * @brief Get the latest event in the list
    *
    */
-  Event latest() const {
+  Event Latest() const {
     LockGuard guard(lock);
 
     return events.back();
@@ -76,10 +76,30 @@ public:
    * @brief Get the first event in the list
    *
    */
-  Event first() const {
+  Event First() const {
     LockGuard guard(lock);
 
     return events.front();
+  }
+
+  /**
+   * @brief Check if the event list contains the given event.
+   *
+   * @param event lvalue reference to the event to check
+   * @returns `true` if the list contains the event else `false`
+   */
+  bool Contains(Event &&event) const {
+    LockGuard guard(lock);
+
+    auto it = events.begin();
+
+    while (it != events.end()) {
+      if (*it == event) {
+        return true;
+      }
+      ++it;
+    }
+    return false;
   }
 
   /**
@@ -87,7 +107,7 @@ public:
    *
    * @returns number of events in the list
    */
-  size_t size() const {
+  size_t Size() const {
     LockGuard guard(lock);
 
     return events.size();
@@ -101,7 +121,7 @@ public:
     LockGuard guard(lock);
 
     // Check if size are equal
-    if (size() != other.size()) {
+    if (Size() != other.size()) {
       return false;
     }
 
@@ -134,26 +154,6 @@ public:
       if (*it == event) {
         return true;
       }
-    }
-    return false;
-  }
-
-  /**
-   * @brief Check if event is in list.
-   *
-   * @param event lvalue reference to the event to check for
-   * @returns `true` if is in list else `false`
-   */
-  bool isIn(Event &&event) const {
-    LockGuard guard(lock);
-
-    auto it = events.begin();
-
-    while (it != events.end()) {
-      if (*it == event) {
-        return true;
-      }
-      ++it;
     }
     return false;
   }
