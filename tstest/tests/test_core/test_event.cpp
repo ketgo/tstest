@@ -6,7 +6,7 @@
  */
 
 /**
- * @brief Buffer Manager Thread Safety Tests
+ * @brief Event Class Tests
  *
  */
 

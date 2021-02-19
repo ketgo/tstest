@@ -11,7 +11,7 @@
 #include <string>
 
 #include <tstest/core/defs.hpp>
-#include <tstest/core/event_list.hpp>
+#include <tstest/core/event_log.hpp>
 
 namespace tstest {
 
@@ -24,10 +24,10 @@ namespace tstest {
 class Runner {
   TSTEST_PRIVATE
   /**
-   * @brief Chronologically ordered list of events
+   * @brief Chronologically ordered log of events.
    *
    */
-  EventList event_list;
+  EventLog event_log;
 
 public:
   void OpBegin(const std::string &name) {}

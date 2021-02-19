@@ -8,6 +8,7 @@
 #ifndef TSTEST_CORE_DEFS_HPP
 #define TSTEST_CORE_DEFS_HPP
 
+#include <functional>
 #include <string>
 
 /**
@@ -29,6 +30,12 @@ namespace tstest {
  *
  */
 typedef std::string EventName;
+
+/**
+ * @brief Assertion function type
+ *
+ */
+typedef std::function<void()> AssertionFunction;
 
 } // namespace tstest
 
