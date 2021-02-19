@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef UTILITY_MUTEX_HPP
-#define UTILITY_MUTEX_HPP
+#ifndef TSTEST_UTILITY_MUTEX_HPP
+#define TSTEST_UTILITY_MUTEX_HPP
 
 #include <mutex>
 #include <shared_mutex>
@@ -210,4 +210,4 @@ public:
 
 } // namespace tstest
 
-#endif /* UTILITY_MUTEX_HPP */
+#endif /* TSTEST_UTILITY_MUTEX_HPP */

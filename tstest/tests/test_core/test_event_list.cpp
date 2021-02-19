@@ -16,15 +16,15 @@
 #include <string>
 #include <thread>
 
-#include <tstest/core/event_queue.hpp>
+#include <tstest/core/event_list.hpp>
 
 using namespace tstest;
 
-class EventQueueTestFixture : public ::testing::Test {
+class EventListTestFixture : public ::testing::Test {
 protected:
   void SetUp() override {}
 
   void TearDown() override {}
 };
 
-TEST_F(EventQueueTestFixture, Test) {}
+TEST_F(EventListTestFixture, Test) {}

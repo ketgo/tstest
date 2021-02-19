@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef OPERATION_HPP
-#define OPERATION_HPP
+#ifndef TSTEST_CORE_OPERATION_HPP
+#define TSTEST_CORE_OPERATION_HPP
 
 #include <string>
 
@@ -34,4 +34,4 @@ public:
 
 } // namespace tstest
 
-#endif /* OPERATION_HPP */
+#endif /* TSTEST_CORE_OPERATION_HPP */

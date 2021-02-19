@@ -5,19 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef EVENT_QUEUE_HPP
-#define EVENT_QUEUE_HPP
+#ifndef TSTEST_CORE_DEFS_HPP
+#define TSTEST_CORE_DEFS_HPP
 
-#include <atomic>
+#include <string>
 
 namespace tstest {
 
 /**
- * @brief
+ * @brief Event type
  *
  */
-class EventQueue {};
+typedef std::string Event;
 
 } // namespace tstest
 
-#endif /* EVENT_QUEUE_HPP */
+#endif /* TSTEST_CORE_DEFS_HPP */

@@ -39,8 +39,8 @@
  * when compiling with gcc.
  */
 
-#ifndef UTILITY_ANNOTATIONS_HPP
-#define UTILITY_ANNOTATIONS_HPP
+#ifndef TSTEST_UTILITY_ANNOTATIONS_HPP
+#define TSTEST_UTILITY_ANNOTATIONS_HPP
 
 #if defined(__clang__)
 #define THREAD_ANNOTATION_ATTRIBUTE__(x) __attribute__((x))
@@ -341,4 +341,4 @@ inline T &ts_unchecked_read(T &v) NO_THREAD_SAFETY_ANALYSIS {
 
 } // namespace tstest
 
-#endif /* UTILITY_ANNOTATIONS_HPP */
+#endif /* TSTEST_UTILITY_ANNOTATIONS_HPP */
