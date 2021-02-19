@@ -11,6 +11,7 @@
 #include <list>
 
 #include <tstest/core/defs.hpp>
+#include <tstest/core/event.hpp>
 #include <tstest/utility/annotations.hpp>
 #include <tstest/utility/mutex.hpp>
 
@@ -23,7 +24,7 @@ namespace tstest {
  * pushed by one or more threads during testing.
  */
 class EventList {
-private:
+  TSTEST_PRIVATE
   /**
    * @brief Re-enterent Lock for mutual exclusion
    *
@@ -116,6 +117,45 @@ public:
     }
 
     return true;
+  }
+
+  /**
+   * @brief Check if event is in list.
+   *
+   * @param event const reference to the event to check for
+   * @returns `true` if is in list else `false`
+   */
+  bool isIn(const Event &event) const {
+    LockGuard guard(lock);
+
+    auto it = events.begin();
+
+    while (it != events.end()) {
+      if (*it == event) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @brief Check if event is in list.
+   *
+   * @param event lvalue reference to the event to check for
+   * @returns `true` if is in list else `false`
+   */
+  bool isIn(Event &&event) const {
+    LockGuard guard(lock);
+
+    auto it = events.begin();
+
+    while (it != events.end()) {
+      if (*it == event) {
+        return true;
+      }
+      ++it;
+    }
+    return false;
   }
 };
 

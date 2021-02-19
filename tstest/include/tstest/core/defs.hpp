@@ -10,13 +10,25 @@
 
 #include <string>
 
+/**
+ * Used for intrusive testing
+ *
+ */
+#ifdef TSTEST_INTRUSIVE_TESTING
+#define TSTEST_PRIVATE public:
+#define TSTEST_PROTECTED public:
+#else
+#define TSTEST_PRIVATE private:
+#define TSTEST_PROTECTED protected:
+#endif
+
 namespace tstest {
 
 /**
- * @brief Event type
+ * @brief Event name type
  *
  */
-typedef std::string Event;
+typedef std::string EventName;
 
 } // namespace tstest
 
