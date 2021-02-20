@@ -30,15 +30,15 @@ class Runner {
   EventLog event_log;
 
 public:
-  void OpBegin(const std::string &name) {}
+  void OpBegin(const EventName &event_name) {}
 
-  void OpBegin(const std::string &&name) {}
+  void OpBegin(const EventName &&event_name) {}
 
-  void OpEnd(const std::string &name) {}
+  void OpEnd(const EventName &event_name) {}
 
-  void OpEnd(const std::string &&name) {}
+  void OpEnd(const EventName &&event_name) {}
 
-  void Eun();
+  void Run();
 };
 
 } // namespace tstest

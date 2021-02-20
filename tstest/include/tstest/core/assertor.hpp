@@ -102,49 +102,63 @@ public:
    * @brief Remove assertion function from dispatch table for given event list.
    *
    * @param event_list Constant reference to event list
+   * @returns `1` if an assertion function is removed else `0`
    */
-  void Remove(const EventList &event_list) { dispatch_table.erase(event_list); }
+  size_t Remove(const EventList &event_list) {
+    return dispatch_table.erase(event_list);
+  }
 
   /**
    * @brief Remove assertion function from dispatch table for given event list.
    *
    * @param event_list Rvalue reference to event list
+   * @returns `1` if an assertion function is removed else `0`
    */
-  void Remove(const EventList &&event_list) {
-    dispatch_table.erase(event_list);
+  size_t Remove(const EventList &&event_list) {
+    return dispatch_table.erase(event_list);
   }
 
   /**
-   * @brief Run assertion using the dispatch table. In case no assertion found
-   * for the observed event logs, the `NoAssertionFunctionFound` exception is
-   * raised. This exception can be disabled if the `raise` argument is set to
-   * `false`.
+   * @brief Run assertion using the configured dispatch table. An exception is
+   * thrown in case no assertion function is found for the observed event logs.
    *
    * @param event_log Constant reference to the event log.
-   * @param raise Flag to indicate if `NoAssertionFunctionFound` exception
-   * should be raised. Default set to `true`.
+   *
    */
-  void Assert(const EventLog &event_log,
-              bool raise = true) NO_THREAD_SAFETY_ANALYSIS {
-    AssertionFunction assertion_function;
+  void Assert(const EventLog &event_log) const NO_THREAD_SAFETY_ANALYSIS {
+    AssertionFunction assertion_function = [&]() {
+      // TODO: Detailed exception message
+      throw NoAssertionFunctionFound();
+    };
 
     // Find assertion function for given event log
     auto it = dispatch_table.find(event_log.events);
-
     // Check if assertion function found
-    if (it == dispatch_table.end()) {
-      // Assertion function not found so raise `NoAssertionFunctionFound` id the
-      // `raise` flag is set
-      if (raise) {
-        assertion_function = [&]() {
-          // TODO: Detailed exception message
-          throw NoAssertionFunctionFound();
-        };
-      } else {
-        // NOP assertion function set
-        assertion_function = [&]() {};
-      }
-    } else {
+    if (it != dispatch_table.end()) {
+      assertion_function = it->second;
+    }
+
+    // Calling assertion function
+    assertion_function();
+  }
+
+  /**
+   * @brief Run assertion using the configured dispatch table. In case no
+   * assertion function is found then the provided default is executed.
+   *
+   * @param event_log Constant reference to the event log.
+   * @param default_function Default assertion function
+   *
+   */
+  void Assert(const EventLog &event_log,
+              const AssertionFunction &default_function) const
+      NO_THREAD_SAFETY_ANALYSIS {
+    AssertionFunction assertion_function = default_function;
+
+    // Find assertion function for given event log
+    auto it = dispatch_table.find(event_log.events);
+    // Check if assertion function found
+    if (it != dispatch_table.end()) {
       assertion_function = it->second;
     }
 
