@@ -5,11 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-/**
- * @brief EventLog Class Tests
- *
- */
-
 #include <gtest/gtest.h>
 
 #include <memory>
@@ -27,6 +22,27 @@
 #include <tstest/core/event_log.hpp>
 
 using namespace tstest;
+
+/**
+ * @brief EventListHash Class Tests
+ *
+ */
+
+TEST(EventListHashTestFixture, TestHashValue) {
+  EventListHash event_list_hash;
+  EventList event_list = {{"test-event", Event::Type::BEGIN},
+                          {"test-event", Event::Type::END}};
+
+  size_t hash = event_list_hash(event_list);
+  size_t hash_expected = 2758387525766090232U;
+
+  ASSERT_EQ(hash, hash_expected);
+}
+
+/**
+ * @brief EventLog Class Tests
+ *
+ */
 
 class EventLogTestFixture : public ::testing::Test {
 protected:

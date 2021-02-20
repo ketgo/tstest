@@ -11,7 +11,6 @@
 #include <unordered_map>
 
 #include <tstest/core/defs.hpp>
-#include <tstest/core/event.hpp>
 #include <tstest/core/event_log.hpp>
 #include <tstest/core/exception.hpp>
 

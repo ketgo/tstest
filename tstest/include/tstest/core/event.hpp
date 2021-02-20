@@ -24,9 +24,6 @@ namespace tstest {
  *
  */
 class Event {
-  // Allows private access to `EventHash` class
-  friend class EventHash; // forward declaration
-
 public:
   /**
    * @brief Enumerated list of event types.
@@ -105,28 +102,20 @@ public:
    * @param event Constant reference to event object
    * @returns Hash value for the given event object
    */
-  size_t operator()(const Event &event) const { return 0; }
-};
+  size_t operator()(const Event &event) const {
 
-/**
- * @brief EventList Type
- *
- */
-typedef std::list<Event> EventList;
+    // Implemented hash function based on comment in
+    // https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
 
-/**
- * @brief Hash function object for event list.
- *
- */
-class EventListHash {
-public:
-  /**
-   * @brief Compute hash value for given event list
-   *
-   * @param event_list Constant reference to event list
-   * @returns Hash value for the given event list
-   */
-  size_t operator()(const EventList &event_list) const { return 0; }
+    size_t seed = event.GetName().size();
+    seed ^= std::hash<int>()((int)event.GetType()) + 0x9e3779b9 + (seed << 6) +
+            (seed >> 2);
+    for (auto &i : event.GetName()) {
+      seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+
+    return seed;
+  }
 };
 
 } // namespace tstest

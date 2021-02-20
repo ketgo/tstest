@@ -57,3 +57,22 @@ TEST_F(EventTestFixture, TestInEquality) {
   ASSERT_TRUE(*begin_event != Event("test-event-other", Event::Type::BEGIN));
   ASSERT_TRUE(*end_event != Event("test-event-other", Event::Type::END));
 }
+
+/**
+ * @brief EventHash Class Tests
+ *
+ */
+
+TEST(EventHashTestFixture, TestHashValue) {
+  EventHash event_hash;
+  Event begin_event("test-event", Event::Type::BEGIN);
+  Event end_event("test-event", Event::Type::END);
+
+  size_t begin_event_hash = event_hash(begin_event);
+  size_t begin_event_hash_expected = 2925993893350407644U;
+  size_t end_event_hash = event_hash(end_event);
+  size_t end_event_hash_expected = 15990077341322827889U;
+
+  ASSERT_EQ(begin_event_hash, begin_event_hash_expected);
+  ASSERT_EQ(end_event_hash, end_event_hash_expected);
+}
