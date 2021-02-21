@@ -39,13 +39,13 @@ protected:
 };
 
 TEST_F(EventTestFixture, TestGetType) {
-  ASSERT_EQ(begin_event->GetType(), Event::Type::BEGIN);
-  ASSERT_EQ(end_event->GetType(), Event::Type::END);
+  ASSERT_EQ(begin_event->GetEventType(), Event::Type::BEGIN);
+  ASSERT_EQ(end_event->GetEventType(), Event::Type::END);
 }
 
 TEST_F(EventTestFixture, TestGetName) {
-  ASSERT_EQ(begin_event->GetName(), "test-event");
-  ASSERT_EQ(end_event->GetName(), "test-event");
+  ASSERT_EQ(begin_event->GetOperationName(), "test-event");
+  ASSERT_EQ(end_event->GetOperationName(), "test-event");
 }
 
 TEST_F(EventTestFixture, TestEquality) {
@@ -75,4 +75,20 @@ TEST(EventHashTestFixture, TestHashValue) {
 
   ASSERT_EQ(begin_event_hash, begin_event_hash_expected);
   ASSERT_EQ(end_event_hash, end_event_hash_expected);
+}
+
+/**
+ * @brief EventListHash Class Tests
+ *
+ */
+
+TEST(EventListHashTestFixture, TestHashValue) {
+  EventListHash event_list_hash;
+  EventList event_list = {{"test-event", Event::Type::BEGIN},
+                          {"test-event", Event::Type::END}};
+
+  size_t hash = event_list_hash(event_list);
+  size_t hash_expected = 2758387525766090232U;
+
+  ASSERT_EQ(hash, hash_expected);
 }

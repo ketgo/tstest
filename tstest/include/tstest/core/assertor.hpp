@@ -8,6 +8,7 @@
 #ifndef TSTEST_CORE_ASSERTOR_HPP
 #define TSTEST_CORE_ASSERTOR_HPP
 
+#include <functional>
 #include <unordered_map>
 
 #include <tstest/core/defs.hpp>
@@ -15,6 +16,12 @@
 #include <tstest/core/exception.hpp>
 
 namespace tstest {
+
+/**
+ * @brief Assertion function type
+ *
+ */
+typedef std::function<void()> AssertionFunction;
 
 /**
  * @brief Assertor Class
@@ -60,6 +67,8 @@ public:
   /**
    * @brief Get assertion function for given event list.
    *
+   * @thread_unsafe
+   *
    * @param event_list Constant reference to the event list
    * @returns Constant reference to assertion function
    */
@@ -70,6 +79,8 @@ public:
   /**
    * @brief Get assertion function for given event list.
    *
+   * @thread_unsafe
+   *
    * @param event_list Rvalue reference to the event list
    * @returns Constant reference to assertion function
    */
@@ -78,7 +89,9 @@ public:
   }
 
   /**
-   * @brief Insert assertion function into dispatch table for given event_list.
+   * @brief Insert assertion function into dispatch table for given event list.
+   *
+   * @thread_unsafe
    *
    * @param event_list Constant reference to event list
    * @param assertion_function Constant reference to assertion function
@@ -91,6 +104,8 @@ public:
   /**
    * @brief Insert assertion function into dispatch table for given event list.
    *
+   * @thread_unsafe
+   *
    * @param event_list Rvalue reference to event list
    * @param assertion_function Rvalue reference to assertion function
    */
@@ -101,6 +116,8 @@ public:
   /**
    * @brief Remove assertion function from dispatch table for given event list.
    *
+   * @thread_unsafe
+   *
    * @param event_list Constant reference to event list
    * @returns `1` if an assertion function is removed else `0`
    */
@@ -110,6 +127,8 @@ public:
 
   /**
    * @brief Remove assertion function from dispatch table for given event list.
+   *
+   * @thread_unsafe
    *
    * @param event_list Rvalue reference to event list
    * @returns `1` if an assertion function is removed else `0`
@@ -122,6 +141,8 @@ public:
    * @brief Run assertion using the configured dispatch table. An exception is
    * thrown in case no assertion function is found for the observed event logs.
    *
+   * @thread_unsafe
+   *
    * @param event_log Constant reference to the event log.
    *
    */
@@ -132,7 +153,7 @@ public:
     };
 
     // Find assertion function for given event log
-    auto it = dispatch_table.find(event_log.events);
+    auto it = dispatch_table.find(event_log.GetEvents());
     // Check if assertion function found
     if (it != dispatch_table.end()) {
       assertion_function = it->second;
@@ -146,6 +167,8 @@ public:
    * @brief Run assertion using the configured dispatch table. In case no
    * assertion function is found then the provided default is executed.
    *
+   * @thread_unsafe
+   *
    * @param event_log Constant reference to the event log.
    * @param default_function Default assertion function
    *
@@ -156,7 +179,7 @@ public:
     AssertionFunction assertion_function = default_function;
 
     // Find assertion function for given event log
-    auto it = dispatch_table.find(event_log.events);
+    auto it = dispatch_table.find(event_log.GetEvents());
     // Check if assertion function found
     if (it != dispatch_table.end()) {
       assertion_function = it->second;

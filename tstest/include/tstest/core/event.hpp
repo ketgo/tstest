@@ -16,8 +16,9 @@ namespace tstest {
 /**
  * @brief Event Class
  *
- * The class represents in event. It consists of a name and the type of event.
- * Currently only the following event types are supported:
+ * The class represents an operational event. It contaians the name of the
+ * operation and the type of event. Currently only the following event types are
+ * supported:
  *
  * - BEGIN
  * - END
@@ -34,39 +35,42 @@ public:
   /**
    * @brief Construct a new Event object
    *
-   * @param name Constant reference to the name of the event
-   * @param type Type of event
+   * @param operation_name Constant reference to the name of the operation
+   * @param event_type Type of event
    */
-  Event(const EventName &name, const Type type) : name(name), type(type) {}
+  Event(const OperationName &operation_name, const Type event_type)
+      : operation_name(operation_name), event_type(event_type) {}
 
   /**
    * @brief Construct a new Event object
    *
-   * @param name Lvalue reference to the name of the event
-   * @param type Type of event
+   * @param operation_name Lvalue reference to the name of the operation
+   * @param event_type Type of event
    */
-  Event(EventName &&name, const Type type) : name(name), type(type) {}
+  Event(OperationName &&operation_name, const Type event_type)
+      : operation_name(operation_name), event_type(event_type) {}
 
   /**
    * @brief Get the event type
    *
    * @returns Constant reference to the event type
    */
-  const Type &GetType() const { return type; }
+  const Type &GetEventType() const { return event_type; }
 
   /**
-   * @brief Get the event name
+   * @brief Get the operation name
    *
-   * @returns Constant reference to the event name
+   * @returns Constant reference to the operation name
    */
-  const EventName &GetName() const { return name; }
+  const OperationName &GetOperationName() const { return operation_name; }
 
   /**
    * @brief Equality comparision operator
    *
    */
   bool operator==(const Event &other) const {
-    return type == other.type && name == other.name;
+    return event_type == other.event_type &&
+           operation_name == other.operation_name;
   }
 
   /**
@@ -74,7 +78,8 @@ public:
    *
    */
   bool operator!=(const Event &other) const {
-    return type != other.type || name != other.name;
+    return event_type != other.event_type ||
+           operation_name != other.operation_name;
   }
 
   TSTEST_PRIVATE
@@ -82,12 +87,12 @@ public:
    * @brief Type of event
    *
    */
-  Type type;
+  Type event_type;
   /**
-   * @brief Name of the event
+   * @brief Name of the operation
    *
    */
-  EventName name;
+  OperationName operation_name;
 };
 
 /**
@@ -107,11 +112,43 @@ public:
     // Implemented hash function based on comment in
     // https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
 
-    size_t seed = event.GetName().size();
-    seed ^= std::hash<int>()((int)event.GetType()) + 0x9e3779b9 + (seed << 6) +
-            (seed >> 2);
-    for (auto &i : event.GetName()) {
+    size_t seed = event.GetOperationName().size();
+    seed ^= std::hash<int>()((int)event.GetEventType()) + 0x9e3779b9 +
+            (seed << 6) + (seed >> 2);
+    for (auto &i : event.GetOperationName()) {
       seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+
+    return seed;
+  }
+};
+
+/**
+ * @brief EventList Type
+ *
+ */
+typedef std::list<Event> EventList;
+
+/**
+ * @brief Hash function object for event list.
+ *
+ */
+class EventListHash {
+public:
+  /**
+   * @brief Compute hash value for given event list
+   *
+   * @param event_list Constant reference to event list
+   * @returns Hash value for the given event list
+   */
+  size_t operator()(const EventList &event_list) const {
+    // Implemented hash function based on comment in
+    // https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
+
+    size_t seed = event_list.size();
+    EventHash event_hash;
+    for (auto &event : event_list) {
+      seed ^= event_hash(event) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
 
     return seed;

@@ -16,47 +16,12 @@
 namespace tstest {
 
 /**
- * @brief EventList Type
- *
- */
-typedef std::list<Event> EventList;
-
-/**
- * @brief Hash function object for event list.
- *
- */
-class EventListHash {
-public:
-  /**
-   * @brief Compute hash value for given event list
-   *
-   * @param event_list Constant reference to event list
-   * @returns Hash value for the given event list
-   */
-  size_t operator()(const EventList &event_list) const {
-    // Implemented hash function based on comment in
-    // https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
-
-    size_t seed = event_list.size();
-    EventHash event_hash;
-    for (auto &event : event_list) {
-      seed ^= event_hash(event) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-
-    return seed;
-  }
-};
-
-/**
  * @brief Event Log Class
  *
  * The event log contains chronologically ordered sequence of operational
  * events pushed by one or more threads during testing.
  */
 class EventLog {
-  // Allows private access to `Assertor` class
-  friend class Assertor; // forward declaration
-
   TSTEST_PRIVATE
   /**
    * @brief Re-enterent Lock for mutual exclusion
@@ -121,6 +86,19 @@ public:
     LockGuard guard(lock);
 
     return events.front();
+  }
+
+  /**
+   * @brief Get the list of events logged.
+   *
+   * @thread_safe
+   *
+   * @returns Copy of the event list
+   */
+  EventList GetEvents() const {
+    LockGuard guard(lock);
+
+    return events;
   }
 
   /**
