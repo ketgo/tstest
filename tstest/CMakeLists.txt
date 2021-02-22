@@ -13,7 +13,7 @@ include(tools)
 cxx_14()
 
 # Set project lib name
-set(LIB ${PROJECT_NAME}_lib)
+set(LIB ${PROJECT_NAME})
 # Set test binary name
 set(TEST_BINARY ${PROJECT_NAME}_test)
 # Set test binary name

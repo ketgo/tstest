@@ -20,9 +20,6 @@ option(PROJECT_BUILD_INSTALL "Install CMake targets during install step." ${MAIN
 if(PROJECT_BUILD_TESTS)
     # Enable testing
     enable_testing()
-    
-    # Update git submodules
-    include(GitSubmodules)
 
     # Add dependencies
     add_subdirectory(${PROJECT_SOURCE_DIR}/third_party)
