@@ -10,12 +10,12 @@ The utility is a header-only library and can thus be installed by simply copying
 The recommended way of installing is by using git submodules and CMake:
 1. Create a submodule in your project 
     ```bash
-        # From your project root
-        $ git submodule add https://github.com/ketgo/tstest.git third_party/tstest
+    # From your project root
+    $ git submodule add https://github.com/ketgo/tstest.git third_party/tstest
     ```
 2. Add the following in your CMakeLists.txt file
     ```
-        add_subdirectory(third_party/tstest)
+    add_subdirectory(third_party/tstest)
     ```
 
 ## Usage
@@ -23,56 +23,68 @@ The recommended way of installing is by using git submodules and CMake:
 The following usage example use the googletest testing library. However, TSTest can be used with any C++ testing framework.
 
 ```c++
-    #include <tstest/tstest.hpp>
+#include <tstest/tstest.hpp>
 
-    using namespace tstest;
+using namespace tstest;
 
-    class TSTestTestFixture : public ::testing::Test {
-    protected:
-        std::unique_ptr<Assertor> assertor;
-        std::unique_ptr<Runner> runner;
+class TSTestTestFixture : public ::testing::Test {
+protected:
+    std::unique_ptr<Assertor> assertor;
+    std::unique_ptr<Runner> runner;
         
-        void SetUp() override {
+    void SetUp() override {
         // Setup assertor
         assertor = std::make_unique<Assertor>();
         // Setup runner
         runner = std::make_unique<Runner>();
-        }
+    }
         
-        void TearDown() override {}
+    void TearDown() override {}
+};
+
+TEST_F(TSTestTestFixture, TestEndToEnd) {
+    bool flag = false; //<- test flag
+
+    // Inserting thread function a
+    THREAD((*runner), "test-thread-a") {
+        int i;
+        OPERATION("test_operation-a", i = 1);
     };
 
-    TEST_F(TSTestTestFixture, TestEndToEnd) {
-        bool flag = false; //<- test flag
+    // Inserting thread function b
+    THREAD((*runner), "test-thread-b") {
+        OPERATION("test_operation-b", flag = true);
+    };
 
-        // Inserting thread function a
-        THREAD((*runner), "test-thread-a") {
-            int i;
-            OPERATION("test_operation-a", i = 1);
-        };
+    // Inserting assertion function for different outcomes
+    assertor->Insert(
+        {
+            {"test_operation-b", Event::Type::BEGIN},
+            {"test_operation-b", Event::Type::END},
+            {"test_operation-a", Event::Type::BEGIN},
+            {"test_operation-a", Event::Type::END},
+        },
+        [&]() { 
+            SUCCEED();
+        }
+    );
+    assertor->Insert(
+        {
+            {"test_operation-a", Event::Type::BEGIN},
+            {"test_operation-b", Event::Type::BEGIN},
+            {"test_operation-b", Event::Type::END},
+            {"test_operation-a", Event::Type::END},
+        },
+        [&]() { 
+            FAIL();
+        }
+    );
 
-        // Inserting thread function b
-        THREAD((*runner), "test-thread-b") {
-            OPERATION("test_operation-b", flag = true);
-        };
-        // Inserting assertion function
-        assertor->Insert(
-            {
-                {"test_operation-b", Event::Type::BEGIN},
-                {"test_operation-b", Event::Type::END},
-                {"test_operation-a", Event::Type::BEGIN},
-                {"test_operation-a", Event::Type::END},
-            },
-            [&]() {
-                SUCCEED();
-            }
-        );
-
-        // Running thread functions
-        runner->Run();
-        // Assert outcomes
-        assertor->Assert(runner->GetEventLog());
-    }
+    // Running thread functions
+    runner->Run();
+    // Assert outcomes
+    assertor->Assert(runner->GetEventLog());
+}
 ```
 
 ## Build
