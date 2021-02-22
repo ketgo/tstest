@@ -7,9 +7,6 @@ configure_file (
 )
 
 include(c++-standards)
-include(code-coverage)
-include(formatting)
-include(sanitizers)
 include(tools)
 
 # Require C++14
@@ -74,5 +71,10 @@ else()
     endif()
 endif()
 
-# Tests
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+if(PROJECT_BUILD_TESTS)
+    include(sanitizers)
+    include(code-coverage)
+    
+    # Tests
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+endif()
