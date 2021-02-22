@@ -119,4 +119,4 @@ The source code is under MIT license.
 
 Code review, pull requests, and/or bug reports greatly welcomed! :)
 
-If you have feature requests or suggestions to improve TSTest, feel free to open an Issue or reach me on my email (ketangoyal1988@gmail.com).
+If you have feature requests or suggestions to improve TSTest, feel free to open an Issue or reach me on my [email](ketangoyal1988@gmail.com).
