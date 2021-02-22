@@ -14,7 +14,6 @@
 
 #include <memory>
 #include <string>
-#include <thread>
 
 /**
  * @brief Enable debug mode if not already enabled

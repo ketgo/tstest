@@ -33,22 +33,17 @@ typedef std::function<void(ExecutionContext)> ThreadFunction;
 class Runner {
 public:
   /**
-   * @brief Get an inserted thread function with given name.
+   * @brief Access thread function method
+   *
+   * If a thread function with given name exists in the runner, then a refernce
+   * to the function is returned. If no such thread function exists, a new
+   * function is inserted and its reference returned.
    *
    * @param thread_name Rvalue reference to thread name
-   * @returns Constant reference to thread function
+   * @returns Reference to thread function
    */
-  const ThreadFunction &Get(ThreadName &&thread_name) {
-    return thread_functions.at(thread_name);
-  }
-  /**
-   * @brief Insert a thread function with given name.
-   *
-   * @param thread_name Rvalue reference to thread name
-   * @param thread_function Rvalue reference to thread function
-   */
-  void Insert(ThreadName &&thread_name, ThreadFunction &&thread_function) {
-    thread_functions[thread_name] = thread_function;
+  ThreadFunction &operator[](ThreadName &&thread_name) {
+    return thread_functions[thread_name];
   }
 
   /**

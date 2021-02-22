@@ -14,7 +14,6 @@
 
 #include <memory>
 #include <string>
-#include <thread>
 
 /**
  * @brief Enable debug mode if not already enabled
@@ -44,12 +43,12 @@ protected:
 
 TEST_F(RunnerTestFixture, TestInsert) {
   // Inserting thread function
-  runner->Insert("test", [&](ExecutionContext context) {
+  (*runner)["test"] = [&](ExecutionContext context) {
     context.LogOperationBegin("test_operation");
-  });
+  };
   // Running assertion function
   ExecutionContext context(event_log.get(), "test");
-  runner->Get("test")(context);
+  (*runner)["test"](context);
 
   ASSERT_TRUE(event_log->Contains({"test_operation", Event::Type::BEGIN}));
 }
@@ -59,22 +58,22 @@ TEST_F(RunnerTestFixture, TestRemove) {
   ASSERT_EQ(runner->Remove("test"), 0);
 
   // Inserting and then removing a thread function
-  runner->Insert("test", [&](ExecutionContext context) {
+  (*runner)["test"] = [&](ExecutionContext context) {
     context.LogOperationBegin("test_operation");
-  });
+  };
   ASSERT_EQ(runner->Remove("test"), 1);
 }
 
 TEST_F(RunnerTestFixture, TestRun) {
   // Inserting thread function a
-  runner->Insert("test-thread-a", [&](ExecutionContext context) {
+  (*runner)["test-thread-a"] = [&](ExecutionContext context) {
     context.LogOperationBegin("test_operation-a");
-  });
+  };
 
   // Inserting thread function b
-  runner->Insert("test-thread-b", [&](ExecutionContext context) {
+  (*runner)["test-thread-b"] = [&](ExecutionContext context) {
     context.LogOperationBegin("test_operation-b");
-  });
+  };
 
   // Running thread functions
   runner->Run();
