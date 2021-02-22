@@ -146,14 +146,16 @@ public:
    * @param event_log Constant reference to the event log.
    *
    */
-  void Assert(const EventLog &event_log) const NO_THREAD_SAFETY_ANALYSIS {
+  void Assert(const EventLog &event_log) const {
+    EventList event_list = event_log.GetEvents();
+
     AssertionFunction assertion_function = [&]() {
       // TODO: Detailed exception message
-      throw NoAssertionFunctionFound();
+      throw NoAssertionFunctionFound(event_list);
     };
 
     // Find assertion function for given event log
-    auto it = dispatch_table.find(event_log.GetEvents());
+    auto it = dispatch_table.find(event_list);
     // Check if assertion function found
     if (it != dispatch_table.end()) {
       assertion_function = it->second;
@@ -174,8 +176,7 @@ public:
    *
    */
   void Assert(const EventLog &event_log,
-              const AssertionFunction &default_function) const
-      NO_THREAD_SAFETY_ANALYSIS {
+              const AssertionFunction &default_function) const {
     AssertionFunction assertion_function = default_function;
 
     // Find assertion function for given event log

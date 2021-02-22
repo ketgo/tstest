@@ -13,7 +13,6 @@
 #include <unordered_map>
 
 #include <tstest/core/context.hpp>
-#include <tstest/core/defs.hpp>
 #include <tstest/core/event_log.hpp>
 
 namespace tstest {

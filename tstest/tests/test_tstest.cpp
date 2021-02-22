@@ -41,7 +41,9 @@ protected:
   void TearDown() override {}
 };
 
-TEST_F(TSTestTestFixture, TestInterface) {
+TEST_F(TSTestTestFixture, TestEndToEnd) {
+  bool flag = false; //<- test flag
+
   // Inserting thread function a
   THREAD((*runner), "test-thread-a") {
     int i;
@@ -50,16 +52,23 @@ TEST_F(TSTestTestFixture, TestInterface) {
 
   // Inserting thread function b
   THREAD((*runner), "test-thread-b") {
-    OPERATION("test_operation-b", int j = 1);
+    OPERATION("test_operation-b", flag = true);
   };
+
+  assertor->Insert(
+      {
+          {"test_operation-b", Event::Type::BEGIN},
+          {"test_operation-b", Event::Type::END},
+          {"test_operation-a", Event::Type::BEGIN},
+          {"test_operation-a", Event::Type::END},
+      },
+      [&]() {
+          SUCCEED();
+      });
 
   // Running thread functions
   runner->Run();
 
-  // Assert operational event logs for the two threads
-  const EventLog &event_log_ = runner->GetEventLog();
-  ASSERT_TRUE(event_log_.Contains({"test_operation-a", Event::Type::BEGIN}));
-  ASSERT_TRUE(event_log_.Contains({"test_operation-a", Event::Type::END}));
-  ASSERT_TRUE(event_log_.Contains({"test_operation-b", Event::Type::BEGIN}));
-  ASSERT_TRUE(event_log_.Contains({"test_operation-b", Event::Type::END}));
+  // Assert outcomes
+  assertor->Assert(runner->GetEventLog());
 }

@@ -20,7 +20,7 @@
  *
  *  THREAD(runner, "example-thread") {
  *    ...
- *  }
+ *  };
  *
  */
 #define THREAD(Runner, Name) Runner[Name] = [&](ExecutionContext context)
@@ -34,7 +34,7 @@
  *
  *  THREAD(runner, "example-thread") {
  *    OPERATION("example-operation", int i=1);
- *  }
+ *  };
  *
  */
 #define OPERATION(Name, Expression)                                            \

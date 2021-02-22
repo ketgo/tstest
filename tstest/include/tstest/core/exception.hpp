@@ -11,6 +11,8 @@
 #include <exception>
 #include <string>
 
+#include <tstest/core/event.hpp>
+
 namespace tstest {
 
 /**
@@ -24,9 +26,12 @@ private:
   std::string msg;
 
 public:
-  NoAssertionFunctionFound() : msg("No assertion function found.") {}
-  NoAssertionFunctionFound(const char *msg) : msg(msg) {}
-  NoAssertionFunctionFound(std::string &msg) : msg(msg) {}
+  NoAssertionFunctionFound(EventList &event_list)
+      : msg("No assertion function found for event sequence:") {
+    for (auto &event : event_list) {
+      msg = msg + event.ToString();
+    }
+  }
 
   const char *what() const throw() { return msg.c_str(); }
 };

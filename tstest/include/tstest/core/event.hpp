@@ -64,6 +64,10 @@ public:
    */
   const OperationName &GetOperationName() const { return operation_name; }
 
+  std::string ToString() {
+    return "[" + operation_name + ", " + std::to_string((int)event_type) + "]";
+  }
+
   /**
    * @brief Equality comparision operator
    *
