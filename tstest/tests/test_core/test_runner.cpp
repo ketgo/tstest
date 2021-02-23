@@ -50,7 +50,8 @@ TEST_F(RunnerTestFixture, TestInsert) {
   ExecutionContext context(event_log.get(), "test");
   (*runner)["test"](context);
 
-  ASSERT_TRUE(event_log->Contains({"test_operation", Event::Type::BEGIN}));
+  ASSERT_TRUE(
+      event_log->Contains({"test", "test_operation", Event::Type::BEGIN}));
 }
 
 TEST_F(RunnerTestFixture, TestRemove) {
@@ -80,6 +81,8 @@ TEST_F(RunnerTestFixture, TestRun) {
 
   // Assert operational event logs for the two threads
   const EventLog &event_log_ = runner->GetEventLog();
-  ASSERT_TRUE(event_log_.Contains({"test_operation-a", Event::Type::BEGIN}));
-  ASSERT_TRUE(event_log_.Contains({"test_operation-b", Event::Type::BEGIN}));
+  ASSERT_TRUE(event_log_.Contains(
+      {"test-thread-a", "test_operation-a", Event::Type::BEGIN}));
+  ASSERT_TRUE(event_log_.Contains(
+      {"test-thread-b", "test_operation-b", Event::Type::BEGIN}));
 }

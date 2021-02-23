@@ -37,8 +37,7 @@ public:
    * @param operation_name Rvalue reference to operation name
    */
   void LogOperationBegin(OperationName &&operation_name) {
-    // TODO: Add thread name to event
-    event_log->Push({operation_name, Event::Type::BEGIN});
+    event_log->Push({thread_name, operation_name, Event::Type::BEGIN});
   }
 
   /**
@@ -47,8 +46,7 @@ public:
    * @param operation_name Rvalue reference to operation name
    */
   void LogOperationEnd(OperationName &&operation_name) {
-    // TODO: Add thread name to event
-    event_log->Push({operation_name, Event::Type::END});
+    event_log->Push({thread_name, operation_name, Event::Type::END});
   }
 
   TSTEST_PRIVATE
