@@ -45,10 +45,12 @@ protected:
 
 TEST_F(ExecutionContextTestFixture, TestLogOperationBegin) {
   context->LogOperationBegin("test_operation");
-  ASSERT_TRUE(event_log->Contains({"test_operation", Event::Type::BEGIN}));
+  ASSERT_TRUE(
+      event_log->Contains({thread_name, "test_operation", Event::Type::BEGIN}));
 }
 
 TEST_F(ExecutionContextTestFixture, TestLogOperationEnd) {
   context->LogOperationEnd("test_operation");
-  ASSERT_TRUE(event_log->Contains({"test_operation", Event::Type::END}));
+  ASSERT_TRUE(
+      event_log->Contains({thread_name, "test_operation", Event::Type::END}));
 }

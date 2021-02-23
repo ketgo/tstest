@@ -55,16 +55,15 @@ TEST_F(TSTestTestFixture, TestEndToEnd) {
     OPERATION("test_operation-b", flag = true);
   };
 
+  // Inserting assertion function for different outcomes
   assertor->Insert(
       {
-          {"test_operation-b", Event::Type::BEGIN},
-          {"test_operation-b", Event::Type::END},
-          {"test_operation-a", Event::Type::BEGIN},
-          {"test_operation-a", Event::Type::END},
+          {"test-thread-b", "test_operation-b", Event::Type::BEGIN},
+          {"test-thread-b", "test_operation-b", Event::Type::END},
+          {"test-thread-a", "test_operation-a", Event::Type::BEGIN},
+          {"test-thread-a", "test_operation-a", Event::Type::END},
       },
-      [&]() {
-          SUCCEED();
-      });
+      [&]() { SUCCEED(); });
 
   // Running thread functions
   runner->Run();

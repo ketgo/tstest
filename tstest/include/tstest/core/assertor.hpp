@@ -10,6 +10,7 @@
 
 #include <functional>
 #include <unordered_map>
+#include <vector>
 
 #include <tstest/core/defs.hpp>
 #include <tstest/core/event_log.hpp>
@@ -111,6 +112,38 @@ public:
    */
   void Insert(EventList &&event_list, AssertionFunction &&assertion_function) {
     dispatch_table[event_list] = assertion_function;
+  }
+
+  /**
+   * @brief The method inserts a single assertion function into dispatch table
+   * for mutiple event lists.
+   *
+   * @thread_unsafe
+   *
+   * @param event_list Constant reference to a vector of event lists
+   * @param assertion_function Rvalue reference to assertion function
+   */
+  void InsertMany(const std::vector<EventList> &event_lists,
+                  const AssertionFunction &assertion_function) {
+    for (auto &event_list : event_lists) {
+      dispatch_table[event_list] = assertion_function;
+    }
+  }
+
+  /**
+   * @brief The method inserts a single assertion function into dispatch table
+   * for mutiple event lists.
+   *
+   * @thread_unsafe
+   *
+   * @param event_list Rvalue reference to a vector of event lists
+   * @param assertion_function Rvalue reference to assertion function
+   */
+  void InsertMany(std::vector<EventList> &&event_lists,
+                  AssertionFunction &&assertion_function) {
+    for (auto &event_list : event_lists) {
+      dispatch_table[event_list] = assertion_function;
+    }
   }
 
   /**

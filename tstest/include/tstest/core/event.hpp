@@ -30,25 +30,31 @@ public:
    * @brief Enumerated list of event types.
    *
    */
-  enum class Type { BEGIN, END };
+  enum class Type { BEGIN = 0, END };
 
   /**
    * @brief Construct a new Event object
    *
+   * @param thread_name Constant reference to the name of the thread
    * @param operation_name Constant reference to the name of the operation
    * @param event_type Type of event
    */
-  Event(const OperationName &operation_name, const Type event_type)
-      : operation_name(operation_name), event_type(event_type) {}
+  Event(const ThreadName &thread_name, const OperationName &operation_name,
+        const Type event_type)
+      : thread_name(thread_name), operation_name(operation_name),
+        event_type(event_type) {}
 
   /**
    * @brief Construct a new Event object
    *
+   * @param thread_name Lvalue reference to the name of the thread
    * @param operation_name Lvalue reference to the name of the operation
    * @param event_type Type of event
    */
-  Event(OperationName &&operation_name, const Type event_type)
-      : operation_name(operation_name), event_type(event_type) {}
+  Event(ThreadName &&thread_name, OperationName &&operation_name,
+        const Type event_type)
+      : thread_name(thread_name), operation_name(operation_name),
+        event_type(event_type) {}
 
   /**
    * @brief Get the event type
@@ -64,8 +70,22 @@ public:
    */
   const OperationName &GetOperationName() const { return operation_name; }
 
+  /**
+   * @brief Get the thread name
+   *
+   * @returns Constant reference to the thread name
+   */
+  const OperationName &GetThreadName() const { return thread_name; }
+
+  /**
+   * @brief String representation of the event
+   *
+   * @returns event string
+   */
   std::string ToString() {
-    return "[" + operation_name + ", " + std::to_string((int)event_type) + "]";
+    const char *type_str[] = {"BEGIN", "END"};
+    return "[" + thread_name + ", " + operation_name + ", " +
+           type_str[(int)event_type] + "]";
   }
 
   /**
@@ -74,7 +94,8 @@ public:
    */
   bool operator==(const Event &other) const {
     return event_type == other.event_type &&
-           operation_name == other.operation_name;
+           operation_name == other.operation_name &&
+           thread_name == other.thread_name;
   }
 
   /**
@@ -83,7 +104,8 @@ public:
    */
   bool operator!=(const Event &other) const {
     return event_type != other.event_type ||
-           operation_name != other.operation_name;
+           operation_name != other.operation_name ||
+           thread_name != other.thread_name;
   }
 
   TSTEST_PRIVATE
@@ -97,6 +119,11 @@ public:
    *
    */
   OperationName operation_name;
+  /**
+   * @brief Name of thread
+   *
+   */
+  ThreadName thread_name;
 };
 
 /**
@@ -120,6 +147,9 @@ public:
     seed ^= std::hash<int>()((int)event.GetEventType()) + 0x9e3779b9 +
             (seed << 6) + (seed >> 2);
     for (auto &i : event.GetOperationName()) {
+      seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    }
+    for (auto &i : event.GetThreadName()) {
       seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
 
