@@ -23,7 +23,7 @@
  *  };
  *
  */
-#define THREAD(Runner, Name) Runner[Name] = [&](ExecutionContext context)
+#define THREAD(Runner, Name) Runner[Name] = [&](tstest::ExecutionContext context)
 
 /**
  * @brief Macro to define an operation.
