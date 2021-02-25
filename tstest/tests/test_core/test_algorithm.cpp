@@ -28,22 +28,41 @@
 
 using namespace tstest;
 
-TEST(TestAlgorithm, TestGetAllPermutations) {
+TEST(TestAlgorithm, TestGetAllSchedules) {
   EventList event_list = {
-      {"1", "a", Event::Type::BEGIN}, {"1", "b", Event::Type::BEGIN},
-      {"2", "a", Event::Type::BEGIN}, {"2", "b", Event::Type::BEGIN},
-      //{"2", "b", Event::Type::BEGIN}, {"2", "b", Event::Type::END},
+      {"1", "a", Event::Type::BEGIN},
+      {"1", "a", Event::Type::END},
+      {"2", "a", Event::Type::BEGIN},
+      {"2", "a", Event::Type::END},
   };
   std::vector<EventList> permutations;
 
-  GetAllPermutations(event_list, permutations);
+  GetAllSchedules()(event_list, permutations);
 
-  int count = 0;
-  for (auto &event_list_ : permutations) {
-    std::cout << "SEQUENCE: " << count << "\n";
-    for (auto &event : event_list_) {
-      std::cout << "\t" << event.ToString() << "\n";
-    }
-    count++;
-  }
+  std::vector<EventList> expected = {{{"1", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::END},
+                                      {"2", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::END}},
+                                     {{"1", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::END},
+                                      {"2", "a", tstest::Event::Type::END}},
+                                     {{"1", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::END},
+                                      {"1", "a", tstest::Event::Type::END}},
+                                     {{"2", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::END},
+                                      {"2", "a", tstest::Event::Type::END}},
+                                     {{"2", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::END},
+                                      {"1", "a", tstest::Event::Type::END}},
+                                     {{"2", "a", tstest::Event::Type::BEGIN},
+                                      {"2", "a", tstest::Event::Type::END},
+                                      {"1", "a", tstest::Event::Type::BEGIN},
+                                      {"1", "a", tstest::Event::Type::END}}};
+
+  ASSERT_EQ(permutations, expected);
 }
