@@ -82,10 +82,10 @@ public:
    *
    * @returns event string
    */
-  std::string ToString() {
+  std::string ToString() const {
     const char *type_str[] = {"BEGIN", "END"};
-    return "[" + thread_name + ", " + operation_name + ", " +
-           type_str[(int)event_type] + "]";
+    return "{\"" + thread_name + "\", \"" + operation_name +
+           "\", tstest::Event::Type::" + type_str[(int)event_type] + "}";
   }
 
   /**
