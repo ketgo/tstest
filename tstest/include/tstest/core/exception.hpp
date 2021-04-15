@@ -27,9 +27,9 @@ private:
 
 public:
   NoAssertionFunctionFound(EventList &event_list)
-      : msg("No assertion function found for event sequence:") {
+      : msg("No assertion function found for event sequence:\n") {
     for (auto &event : event_list) {
-      msg = msg + event.ToString();
+      msg = msg + event.ToString() + ",\n";
     }
   }
 
