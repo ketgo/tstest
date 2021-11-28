@@ -6,9 +6,6 @@ configure_file (
     "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/version.hpp"
 )
 
-include(c++-standards)
-include(tools)
-
 # Require C++14
 cxx_14()
 
@@ -16,8 +13,6 @@ cxx_14()
 set(LIB ${PROJECT_NAME})
 # Set test binary name
 set(TEST_BINARY ${PROJECT_NAME}_test)
-# Set test binary name
-set(BENCHMARK_BINARY ${PROJECT_NAME}_benchmark)
 
 # Get source files
 file(
@@ -51,6 +46,7 @@ if(${SOURCES})
     if (${CMAKE_BUILD_TYPE} MATCHES Debug)
         target_link_libraries(
             ${LIB} 
+            PUBLIC
             # NOTE: Add any required dependencies here
         )
         target_compile_definitions(${LIB} PUBLIC __TSTEST_DEBUG__)
@@ -72,9 +68,6 @@ else()
 endif()
 
 if(PROJECT_BUILD_TESTS)
-    include(sanitizers)
-    include(code-coverage)
-    
     # Tests
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 endif()

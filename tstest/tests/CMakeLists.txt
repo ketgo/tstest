@@ -14,9 +14,6 @@ add_executable(
     ${SOURCES}
 )
 
-# Setup code coverage
-target_code_coverage(${TEST_BINARY} AUTO)
-
 # Add executable to run by ctest
 # TODO: This runs all the tests as one test. Need to use gtest_Add_test function.
 add_test(NAME ${TEST_BINARY} COMMAND ${TEST_BINARY})
@@ -31,7 +28,16 @@ target_include_directories(
 # Add libraries to link
 target_link_libraries(
     ${TEST_BINARY}
+    PRIVATE
     ${LIB}
     gtest
     gmock
+)
+
+# Setup code coverage
+target_code_coverage(
+    ${TEST_BINARY}
+    EXCLUDE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/*
+    ${PROJECT_SOURCE_DIR}/third_party/*
 )
