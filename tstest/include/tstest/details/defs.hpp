@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_DEFS_HPP
-#define TSTEST_CORE_DEFS_HPP
+#ifndef TSTEST__DETAILS__DEFS_HPP
+#define TSTEST__DETAILS__DEFS_HPP
 
 #include <string>
 
@@ -23,6 +23,7 @@
 #endif
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Operation name type
@@ -32,10 +33,11 @@ typedef std::string OperationName;
 
 /**
  * @brief Thread name type
- * 
+ *
  */
 typedef std::string ThreadName;
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_DEFS_HPP */
+#endif /* TSTEST__DETAILS__DEFS_HPP */

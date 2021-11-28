@@ -22,15 +22,16 @@
  * SOFTWARE.
  */
 
-#ifndef TSTEST_UTILITY_MUTEX_HPP
-#define TSTEST_UTILITY_MUTEX_HPP
+#ifndef TSTEST__DETAILS__MUTEX_HPP
+#define TSTEST__DETAILS__MUTEX_HPP
 
 #include <mutex>
 #include <shared_mutex>
 
-#include <tstest/utility/annotations.hpp>
+#include <tstest/details/annotations.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Mutex Wrapper
@@ -51,11 +52,12 @@ namespace tstest {
  * @tparam MutexType type of mutex to wrap
  *
  */
-template <class MutexType> class CAPABILITY("mutex") Mutex {
-private:
+template <class MutexType>
+class CAPABILITY("mutex") Mutex {
+ private:
   mutable MutexType mutex;
 
-public:
+ public:
   /**
    * @brief Lock mutex
    *
@@ -98,11 +100,12 @@ public:
  *
  * @tparam SharedMutexType type of shared mutex to wrap
  */
-template <class SharedMutexType> class CAPABILITY("mutex") SharedMutex {
-private:
+template <class SharedMutexType>
+class CAPABILITY("mutex") SharedMutex {
+ private:
   mutable SharedMutexType mutex;
 
-public:
+ public:
   /**
    * @brief Lock mutex in exclusive mode
    *
@@ -159,11 +162,12 @@ public:
  * @tparam MutexType type of mutex owned by `std::lock_guard`
  *
  */
-template <class MutexType> class SCOPED_CAPABILITY LockGuard {
-private:
+template <class MutexType>
+class SCOPED_CAPABILITY LockGuard {
+ private:
   std::lock_guard<MutexType> guard;
 
-public:
+ public:
   LockGuard(MutexType &m) ACQUIRE(m) : guard(m) {}
   ~LockGuard() RELEASE() {}
   std::lock_guard<MutexType> &native_handle() { return guard; }
@@ -178,11 +182,12 @@ public:
  * @tparam MutexType type of mutex owned by `std::unique_lock`
  *
  */
-template <class MutexType> class SCOPED_CAPABILITY UniqueLock {
-private:
+template <class MutexType>
+class SCOPED_CAPABILITY UniqueLock {
+ private:
   std::unique_lock<MutexType> guard;
 
-public:
+ public:
   UniqueLock(MutexType &m) ACQUIRE(m) : guard(m) {}
   ~UniqueLock() RELEASE() {}
   std::unique_lock<MutexType> &native_handle() { return guard; }
@@ -198,16 +203,18 @@ public:
  * @tparam MutexType type of mutex owned by `std::shared_lock`
  *
  */
-template <class MutexType> class SCOPED_CAPABILITY SharedLock {
-private:
+template <class MutexType>
+class SCOPED_CAPABILITY SharedLock {
+ private:
   std::shared_lock<MutexType> guard;
 
-public:
+ public:
   SharedLock(MutexType &m) : guard(m) {}
   ~SharedLock() RELEASE() {}
   std::shared_lock<MutexType> &native_handle() { return guard; }
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_UTILITY_MUTEX_HPP */
+#endif /* TSTEST__DETAILS__MUTEX_HPP */

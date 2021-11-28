@@ -24,9 +24,9 @@
 #define __TSTEST_DEBUG__
 #endif
 
-#include <tstest/core/context.hpp>
+#include <tstest/details/context.hpp>
 
-using namespace tstest;
+using namespace tstest::details;
 
 class ExecutionContextTestFixture : public ::testing::Test {
 protected:

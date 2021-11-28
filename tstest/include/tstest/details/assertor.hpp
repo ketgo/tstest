@@ -5,18 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_ASSERTOR_HPP
-#define TSTEST_CORE_ASSERTOR_HPP
+#ifndef TSTEST__DETAILS__ASSERTOR_HPP
+#define TSTEST__DETAILS__ASSERTOR_HPP
 
 #include <functional>
 #include <unordered_map>
 #include <vector>
 
-#include <tstest/core/defs.hpp>
-#include <tstest/core/event_log.hpp>
-#include <tstest/core/exception.hpp>
+#include <tstest/details/defs.hpp>
+#include <tstest/details/event_log.hpp>
+#include <tstest/details/exception.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Assertion function type
@@ -35,7 +36,7 @@ typedef std::function<void()> AssertionFunction;
  *
  */
 class Assertor {
-public:
+ public:
   /**
    * @brief Dispatch Table Type
    *
@@ -231,6 +232,7 @@ public:
   DispatchTable dispatch_table;
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_ASSERTOR_HPP */
+#endif /* TSTEST__DETAILS__ASSERTOR_HPP */

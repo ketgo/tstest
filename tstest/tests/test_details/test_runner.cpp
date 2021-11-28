@@ -23,12 +23,12 @@
 #define __TSTEST_DEBUG__
 #endif
 
-#include <tstest/core/runner.hpp>
+#include <tstest/details/runner.hpp>
 
-using namespace tstest;
+using namespace tstest::details;
 
 class RunnerTestFixture : public ::testing::Test {
-protected:
+ protected:
   std::unique_ptr<EventLog> event_log;
   std::unique_ptr<Runner> runner;
   void SetUp() override {

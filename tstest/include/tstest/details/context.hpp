@@ -5,13 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_CONTEXT_HPP
-#define TSTEST_CORE_CONTEXT_HPP
+#ifndef TSTEST__DETAILS__CONTEXT_HPP
+#define TSTEST__DETAILS__CONTEXT_HPP
 
-#include <tstest/core/defs.hpp>
-#include <tstest/core/event_log.hpp>
+#include <tstest/details/defs.hpp>
+#include <tstest/details/event_log.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Execution Context Class
@@ -21,7 +22,7 @@ namespace tstest {
  *
  */
 class ExecutionContext {
-public:
+ public:
   /**
    * @brief Construct a new Execution Context object
    *
@@ -63,6 +64,7 @@ public:
   ThreadName thread_name;
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_CONTEXT_HPP */
+#endif /* TSTEST__DETAILS__CONTEXT_HPP */

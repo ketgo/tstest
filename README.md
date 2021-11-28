@@ -23,6 +23,8 @@ The recommended way of installing is by using git submodules and CMake:
 The following usage example use the googletest testing library. However, TSTest can be used with any C++ testing framework.
 
 ```c++
+#include <gtest/gtest.h>
+
 #include <tstest/tstest.hpp>
 
 using namespace tstest;
@@ -100,7 +102,7 @@ The above command will create a DEBUG build. For running code quality, coverage,
 ```bash
     $ cmake .. -DCPPCHECK=ON -DCODE_COVERAGE=ON -DUSE_SANITIZER=Thread
 ```
-CMake will now create targets for coverage with the naming convention `ccov-persist_test`. Moreover, the cppCheck tool will print code quality notifications when the source code file is getting compiled. The sanitizers are compiler provided tools that perform checks during a program runtime and return any detected issue. Different compiler flags are set depending on the value set for `USE_SANITIZER`. The possible values are:
+CMake will now create targets for coverage with the naming convention `ccov-tstest_test`. Moreover, the cppCheck tool will print code quality notifications when the source code file is getting compiled. The sanitizers are compiler provided tools that perform checks during a program runtime and return any detected issue. Different compiler flags are set depending on the value set for `USE_SANITIZER`. The possible values are:
 
 - `Address`
 - `Memory`

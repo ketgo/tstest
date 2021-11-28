@@ -5,17 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_RUNNER_HPP
-#define TSTEST_CORE_RUNNER_HPP
+#ifndef TSTEST__DETAILS__RUNNER_HPP
+#define TSTEST__DETAILS__RUNNER_HPP
 
 #include <functional>
 #include <thread>
 #include <unordered_map>
 
-#include <tstest/core/context.hpp>
-#include <tstest/core/event_log.hpp>
+#include <tstest/details/context.hpp>
+#include <tstest/details/event_log.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Thread function type
@@ -30,7 +31,7 @@ typedef std::function<void(ExecutionContext)> ThreadFunction;
  * or more threads, as configured by the user.
  */
 class Runner {
-public:
+ public:
   /**
    * @brief Access thread function method
    *
@@ -97,6 +98,7 @@ public:
   std::unordered_map<ThreadName, ThreadFunction> thread_functions;
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_RUNNER_HPP */
+#endif /* TSTEST__DETAILS__RUNNER_HPP */

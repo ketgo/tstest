@@ -5,15 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_EVENT_LOG_HPP
-#define TSTEST_CORE_EVENT_LOG_HPP
+#ifndef TSTEST__DETAILS__EVENT_LOG_HPP
+#define TSTEST__DETAILS__EVENT_LOG_HPP
 
-#include <tstest/core/defs.hpp>
-#include <tstest/core/event.hpp>
-#include <tstest/utility/annotations.hpp>
-#include <tstest/utility/mutex.hpp>
+#include <tstest/details/defs.hpp>
+#include <tstest/details/event.hpp>
+#include <tstest/details/annotations.hpp>
+#include <tstest/details/mutex.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Event Log Class
@@ -27,9 +28,10 @@ class EventLog {
    * @brief Re-enterent Lock for mutual exclusion
    *
    */
-  typedef typename tstest::Mutex<std::recursive_mutex> Mutex;
-  mutable Mutex lock; //<- lock for achieving thread safety via mutual exclusion
-  typedef typename tstest::LockGuard<Mutex> LockGuard;
+  typedef typename tstest::details::Mutex<std::recursive_mutex> Mutex;
+  mutable Mutex
+      lock;  //<- lock for achieving thread safety via mutual exclusion
+  typedef typename tstest::details::LockGuard<Mutex> LockGuard;
 
   /**
    * @brief Chronologically ordered list of events
@@ -37,7 +39,7 @@ class EventLog {
    */
   EventList events GUARDED_BY(lock);
 
-public:
+ public:
   /**
    * @brief Push an event into the log.
    *
@@ -171,6 +173,7 @@ public:
   }
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_EVENT_LOG_HPP */
+#endif /* TSTEST__DETAILS__EVENT_LOG_HPP */

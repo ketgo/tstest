@@ -24,9 +24,9 @@
 #define __TSTEST_DEBUG__
 #endif
 
-#include <tstest/core/event.hpp>
+#include <tstest/details/event.hpp>
 
-using namespace tstest;
+using namespace tstest::details;
 
 class EventTestFixture : public ::testing::Test {
 protected:

@@ -24,9 +24,9 @@
 #define __TSTEST_DEBUG__
 #endif
 
-#include <tstest/core/assertor.hpp>
+#include <tstest/details/assertor.hpp>
 
-using namespace tstest;
+using namespace tstest::details;
 
 class AssertorTestFixture : public ::testing::Test {
 protected:

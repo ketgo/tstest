@@ -5,16 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_ALGORITHM_HPP
-#define TSTEST_CORE_ALGORITHM_HPP
+#ifndef TSTEST__DETAILS__ALGORITHM_HPP
+#define TSTEST__DETAILS__ALGORITHM_HPP
 
 #include <algorithm>
 #include <unordered_map>
 #include <vector>
 
-#include <tstest/core/event.hpp>
+#include <tstest/details/event.hpp>
 
 namespace tstest {
+namespace details {
 
 /**
  * @brief Get the list of all possible schedules of event sequences for given
@@ -29,7 +30,7 @@ class GetAllSchedules {
   typedef std::vector<unsigned int> IndexVector;
   typedef std::vector<Event> EventVector;
 
-private:
+ private:
   // Vector of events
   EventVector events;
   // Event topological ranks
@@ -102,7 +103,7 @@ private:
     return true;
   }
 
-public:
+ public:
   void operator()(const EventList &event_list, std::vector<EventList> &output) {
     // Initialize
     Initialize(event_list);
@@ -122,6 +123,7 @@ public:
   }
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_ALGORITHM_HPP */
+#endif /* TSTEST__DETAILS__ALGORITHM_HPP */

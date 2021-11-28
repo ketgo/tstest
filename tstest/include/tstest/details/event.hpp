@@ -5,14 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-#ifndef TSTEST_CORE_EVENT_HPP
-#define TSTEST_CORE_EVENT_HPP
+#ifndef TSTEST__DETAILS__EVENT_HPP
+#define TSTEST__DETAILS__EVENT_HPP
 
 #include <list>
 
-#include <tstest/core/defs.hpp>
+#include <tstest/details/defs.hpp>
 
 namespace tstest {
+namespace details {
+
 /**
  * @brief Event Class
  *
@@ -25,7 +27,7 @@ namespace tstest {
  *
  */
 class Event {
-public:
+ public:
   /**
    * @brief Enumerated list of event types.
    *
@@ -41,7 +43,8 @@ public:
    */
   Event(const ThreadName &thread_name, const OperationName &operation_name,
         const Type event_type)
-      : thread_name(thread_name), operation_name(operation_name),
+      : thread_name(thread_name),
+        operation_name(operation_name),
         event_type(event_type) {}
 
   /**
@@ -53,7 +56,8 @@ public:
    */
   Event(ThreadName &&thread_name, OperationName &&operation_name,
         const Type event_type)
-      : thread_name(thread_name), operation_name(operation_name),
+      : thread_name(thread_name),
+        operation_name(operation_name),
         event_type(event_type) {}
 
   /**
@@ -131,7 +135,7 @@ public:
  *
  */
 class EventHash {
-public:
+ public:
   /**
    * @brief Compute hash value for given event object.
    *
@@ -139,7 +143,6 @@ public:
    * @returns Hash value for the given event object
    */
   size_t operator()(const Event &event) const {
-
     // Implemented hash function based on comment in
     // https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
 
@@ -168,7 +171,7 @@ typedef std::list<Event> EventList;
  *
  */
 class EventListHash {
-public:
+ public:
   /**
    * @brief Compute hash value for given event list
    *
@@ -189,6 +192,7 @@ public:
   }
 };
 
-} // namespace tstest
+}  // namespace details
+}  // namespace tstest
 
-#endif /* TSTEST_CORE_EVENT_HPP */
+#endif /* TSTEST__DETAILS__EVENT_HPP */
