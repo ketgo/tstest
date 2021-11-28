@@ -57,8 +57,8 @@ TEST_F(EventTestFixture, TestGetThreadName) {
 }
 
 TEST_F(EventTestFixture, TestToString) {
-  ASSERT_EQ(begin_event->ToString(), "[test, test-event, BEGIN]");
-  ASSERT_EQ(end_event->ToString(), "[test, test-event, END]");
+  ASSERT_EQ(begin_event->ToString(), "{\"test\", \"test-event\", tstest::Event::Type::BEGIN}");
+  ASSERT_EQ(end_event->ToString(), "{\"test\", \"test-event\", tstest::Event::Type::END}");
 }
 
 TEST_F(EventTestFixture, TestEquality) {
